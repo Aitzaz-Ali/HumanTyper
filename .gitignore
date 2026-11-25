@@ -1,0 +1,12 @@
+# Build output
+*.exe
+*.pdb
+bin/
+obj/
+
+# Local settings / editor files
+settings.ini
+.vs/
+.vscode/
+*.user
+Thumbs.db
