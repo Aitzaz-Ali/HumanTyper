@@ -49,13 +49,7 @@ This produces `HumanTyper.exe` next to the source file.
 - Auto-indenting code editors add their own indentation on top of typed text.
 - If another program already owns your hotkey, pick a different combination in the window.
 
-## Releases
 
-Pushing a tag like `v1.0.0` triggers the GitHub Actions workflow in `.github/workflows/build.yml`, which compiles the app and attaches `HumanTyper.exe` to a GitHub release.
-
-```
-git tag v1.0.0
-git push origin v1.0.0
 ```
 
 ## Responsible use
