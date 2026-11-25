@@ -4,6 +4,11 @@ A tiny Windows app that types text into **any** text box with human-like timing.
 
 Useful for forms and remote-desktop/VM windows that block pasting, demos, and screen recordings where you want typing to look natural.
 
+<p align="center">
+  <img src="screenshots/light.png" width="48%" alt="Human Typer in light theme">
+  <img src="screenshots/dark.png" width="48%" alt="Human Typer in dark theme">
+</p>
+
 ## Features
 
 - **Global hotkey** (default `Ctrl+Alt+T`): works from any app, and you can change it in the window
