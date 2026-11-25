@@ -12,6 +12,7 @@ Useful for forms and remote-desktop/VM windows that block pasting, demos, and sc
 - **Type N characters, then pause**: pause for a set time, or wait until you press the hotkey to resume
 - **Clipboard mode**: copy text anywhere and have the hotkey type the clipboard directly
 - **System tray**: runs in the background; right-click the tray icon for the menu
+- **Light and dark themes**: follows your Windows setting automatically, or switch manually with the Theme button
 - **Full Unicode**: emoji and accented characters work; newlines are sent as Enter
 - No installer and no dependencies: one small `.exe`
 
