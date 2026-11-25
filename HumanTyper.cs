@@ -32,6 +32,7 @@ public class MainForm : Form
     const int ID_START = 1, ID_ESC = 2;
     const uint KEYEVENTF_KEYUP = 2, KEYEVENTF_UNICODE = 4;
 
+    [DllImport("user32.dll")] static extern bool SetProcessDPIAware();
     [DllImport("user32.dll")] static extern bool RegisterHotKey(IntPtr h, int id, uint mod, uint vk);
     [DllImport("user32.dll")] static extern bool UnregisterHotKey(IntPtr h, int id);
     [DllImport("user32.dll")] static extern short GetAsyncKeyState(int vk);
@@ -111,6 +112,8 @@ public class MainForm : Form
 
     public MainForm()
     {
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         Text = "Human Typer";
         ClientSize = new Size(580, 640);
         MinimumSize = new Size(520, 560);
@@ -118,7 +121,7 @@ public class MainForm : Form
         StartPosition = FormStartPosition.CenterScreen;
         Icon = MakeIcon();
 
-        lblHint = new Label { Dock = DockStyle.Top, Height = 40, Padding = new Padding(10, 10, 10, 0) };
+        lblHint = new Label { Dock = DockStyle.Top, AutoSize = false, Height = 44, Padding = new Padding(10, 10, 10, 2) };
 
         txt = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, AcceptsReturn = true, AcceptsTab = true, Dock = DockStyle.Fill, Font = new Font("Consolas", 10.5f) };
         Panel txtHost = new Panel { Dock = DockStyle.Fill, Padding = new Padding(10, 6, 10, 6) };
@@ -161,7 +164,7 @@ public class MainForm : Form
         // Bottom bar: start button + status
         Panel bar = new Panel { Dock = DockStyle.Bottom, Height = 44 };
         btnStart = new Button { Text = "Start typing", Left = 12, Top = 7, Width = 140, Height = 30 };
-        lblStatus = new Label { Left = 164, Top = 14, Width = 400, AutoEllipsis = true };
+        lblStatus = new Label { Left = 164, Top = 14, Width = 400, AutoEllipsis = true, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
         bar.Controls.Add(btnStart);
         bar.Controls.Add(lblStatus);
 
@@ -206,6 +209,22 @@ public class MainForm : Form
     void RefreshHints()
     {
         lblHint.Text = "Paste or type your text below. Click into the target text box in any app, then press " + HK + " (Esc stops).";
+        FitHint();
+    }
+
+    // Size the hint label to its wrapped text so nothing is clipped at any window width or DPI.
+    void FitHint()
+    {
+        if (lblHint == null || lblHint.Text.Length == 0) return;
+        int w = Math.Max(50, ClientSize.Width - lblHint.Padding.Horizontal);
+        Size s = TextRenderer.MeasureText(lblHint.Text, lblHint.Font, new Size(w, 0), TextFormatFlags.WordBreak | TextFormatFlags.NoPadding);
+        lblHint.Height = s.Height + lblHint.Padding.Vertical + 8;
+    }
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        FitHint();
     }
 
     void ShowWindow()
@@ -313,6 +332,7 @@ public class MainForm : Form
     protected override void OnResize(EventArgs e)
     {
         base.OnResize(e);
+        FitHint();
         if (tray != null && WindowState == FormWindowState.Minimized) Hide();
     }
 
@@ -528,6 +548,7 @@ public class MainForm : Form
     [STAThread]
     static void Main()
     {
+        try { SetProcessDPIAware(); } catch { }   // crisp text on scaled displays
         Application.EnableVisualStyles();
         Application.Run(new MainForm());
     }
